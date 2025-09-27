@@ -19,7 +19,7 @@ export function buildIcsFromDates(dates, options = {}) {
 
   const events = dates.map((iso) => {
     const start = fmtDate(iso);
-    const end = fmtDate(nextDay(iso)); // all-day: DTEND is exclusief
+    const end = fmtDate(nextDay(iso));
     const uid = `poc-${start}-${Math.random().toString(36).slice(2)}@agenda-web-app`;
     const lines = [
       'BEGIN:VEVENT',
