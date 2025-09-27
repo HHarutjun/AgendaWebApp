@@ -3,6 +3,13 @@
 body { margin: 0; line-height: 1.4; font-family: system-ui, sans-serif; }
 button { cursor: pointer; padding: 0.6rem 1rem; font-size: 1rem; }
 
+/* auth bar */
+.auth-bar {
+  display: flex; gap: 8px; align-items: center; justify-content: flex-end;
+  padding: 8px 0;
+}
+.auth-bar .who { opacity: 0.8; font-size: 0.95rem; }
+
 /* Kalender */
 .calendar { max-width: 380px; user-select: none; }
 .month-nav {

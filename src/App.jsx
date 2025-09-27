@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { buildIcsFromDates, downloadIcs } from './auth/msal';
 
 export default function App() {
   const today = new Date();
@@ -8,7 +9,7 @@ export default function App() {
   const MONTHS = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
   const WEEKDAYS = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
 
-  const { cells, daysInMonth, startWeekday } = useMemo(() => {
+  const { cells, daysInMonth } = useMemo(() => {
     const startOfMonth = new Date(view.year, view.month, 1);
     const endOfMonth = new Date(view.year, view.month + 1, 0);
     const dim = endOfMonth.getDate();
@@ -16,7 +17,7 @@ export default function App() {
     const c = [];
     for (let i = 0; i < mondayFirst; i++) c.push(null);
     for (let d = 1; d <= dim; d++) c.push(d);
-    return { cells: c, daysInMonth: dim, startWeekday: mondayFirst };
+    return { cells: c, daysInMonth: dim };
   }, [view]);
 
   const keyFor = (day) =>
@@ -45,13 +46,18 @@ export default function App() {
     );
   };
 
-  const handleReserve = () => {
+  const handleReserve = async () => {
     const list = Array.from(selected).sort();
     if (list.length === 0) {
       alert('Geen dagen geselecteerd.');
       return;
     }
-    alert(`Geselecteerd:\n${list.join('\n')}\n\n(Wordt later ingepland via Microsoft Graph)`);
+    // Genereer .ics met all-day events en start download
+    const ics = buildIcsFromDates(list, { summary: 'Reservering' });
+    downloadIcs(ics, 'reserveringen.ics');
+
+    // Alternatief (handmatige bevestiging in Outlook Web):
+    // for (const d of list) openOutlookDeeplink(d);
   };
 
   return (
