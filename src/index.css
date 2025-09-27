@@ -2,3 +2,50 @@
 * { box-sizing: border-box; }
 body { margin: 0; line-height: 1.4; font-family: system-ui, sans-serif; }
 button { cursor: pointer; padding: 0.6rem 1rem; font-size: 1rem; }
+
+/* Kalender */
+.calendar { max-width: 380px; user-select: none; }
+.month-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 8px 0 12px;
+}
+.month-nav .title { font-weight: 600; text-transform: capitalize; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.weekday {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.75;
+  padding: 6px 0;
+}
+.cell {
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+}
+.cell.pad {
+  background: transparent;
+}
+.cell.day {
+  padding: 0; border: 1px solid transparent;
+  background: rgba(0,0,0,0.05);
+  transition: background 0.15s, border-color 0.15s, transform 0.05s;
+}
+.cell.day:hover { background: rgba(0,0,0,0.08); }
+.cell.day:active { transform: translateY(1px); }
+.cell.day.selected {
+  background: #2563eb; /* blauw */
+  color: white;
+  border-color: #1e40af;
+}
+@media (prefers-color-scheme: dark) {
+  .cell.day { background: rgba(255,255,255,0.06); }
+  .cell.day:hover { background: rgba(255,255,255,0.1); }
+  .cell.day.selected { background: #3b82f6; border-color: #1d4ed8; }
+}
