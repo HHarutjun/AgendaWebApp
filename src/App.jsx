@@ -5,6 +5,10 @@ export default function App() {
   const today = new Date();
   const [view, setView] = useState({ year: today.getFullYear(), month: today.getMonth() }); // month: 0-11
   const [selected, setSelected] = useState(new Set()); // keys: YYYY-MM-DD
+  // Nieuw: event-details
+  const [summary, setSummary] = useState('Reservering');
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
 
   const MONTHS = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
   const WEEKDAYS = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
@@ -52,13 +56,19 @@ export default function App() {
       alert('Geen dagen geselecteerd.');
       return;
     }
-    // Genereer .ics met all-day events en start download
-    const ics = buildIcsFromDates(list, { summary: 'Reservering' });
+    const ics = buildIcsFromDates(list, {
+      summary: summary?.trim() || 'Reservering',
+      description: description?.trim(),
+      location: location?.trim()
+    });
     downloadIcs(ics, 'reserveringen.ics');
 
     // Alternatief (handmatige bevestiging in Outlook Web):
     // for (const d of list) openOutlookDeeplink(d);
   };
+
+  // Nieuw: klaar-om-te-reserveren conditie
+  const isReady = selected.size > 0 && (summary?.trim().length > 0);
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', padding: 24 }}>
@@ -66,9 +76,9 @@ export default function App() {
       {/* Kalender */}
       <div className="calendar">
         <div className="month-nav">
-          <button onClick={prevMonth} aria-label="Vorige maand">‹</button>
+          <button className="nav-btn" onClick={prevMonth} aria-label="Vorige maand">‹</button>
           <div className="title">{MONTHS[view.month]} {view.year}</div>
-          <button onClick={nextMonth} aria-label="Volgende maand">›</button>
+          <button className="nav-btn" onClick={nextMonth} aria-label="Volgende maand">›</button>
         </div>
 
         <div className="grid">
@@ -94,8 +104,39 @@ export default function App() {
         </div>
       </div>
 
+      {/* Nieuw: event details invoer */}
+      <div className="details">
+        <label>
+          Titel
+          <input
+            type="text"
+            value={summary}
+            onChange={(e) => setSummary(e.target.value)}
+            placeholder="Reservering"
+          />
+        </label>
+        <label>
+          Locatie
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Bijv. kantoor"
+          />
+        </label>
+        <label>
+          Beschrijving
+          <textarea
+            rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Optioneel: extra info..."
+          />
+        </label>
+      </div>
+
       <div style={{ marginTop: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
-        <button onClick={handleReserve}>Reserveren</button>
+        <button className="primary" onClick={handleReserve} disabled={!isReady}>Reserveren</button>
         <span style={{ opacity: 0.8 }}>
           Geselecteerd: {Array.from(selected).sort().slice(0, 3).join(', ') || '—'}
           {selected.size > 3 ? ` (+${selected.size - 3})` : ''}

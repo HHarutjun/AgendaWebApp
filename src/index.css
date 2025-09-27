@@ -3,6 +3,36 @@
 body { margin: 0; line-height: 1.4; font-family: system-ui, sans-serif; }
 button { cursor: pointer; padding: 0.6rem 1rem; font-size: 1rem; }
 
+/* Primaire actie-knop (Reserveren) */
+button.primary {
+  background: #2563eb;
+  color: #fff;
+  border: 1px solid #1e40af;
+  border-radius: 10px;
+}
+button.primary:hover:not(:disabled) { background: #1d4ed8; }
+button.primary:disabled {
+  background: #cbd5e1; /* grijs */
+  border-color: #cbd5e1;
+  color: #475569;
+  cursor: not-allowed;
+}
+
+/* Blauwe pijlen voor maandnavigatie */
+.month-nav .nav-btn {
+  padding: 0 10px;
+  background: transparent;
+  color: #2563eb;
+  border: 1px solid transparent;
+  font-size: 1.25rem;
+  line-height: 1;
+  border-radius: 8px;
+}
+.month-nav .nav-btn:hover {
+  background: rgba(37,99,235,0.12);
+  border-color: rgba(37,99,235,0.2);
+}
+
 /* auth bar */
 .auth-bar {
   display: flex; gap: 8px; align-items: center; justify-content: flex-end;
@@ -55,4 +85,40 @@ button { cursor: pointer; padding: 0.6rem 1rem; font-size: 1rem; }
   .cell.day { background: rgba(255,255,255,0.06); }
   .cell.day:hover { background: rgba(255,255,255,0.1); }
   .cell.day.selected { background: #3b82f6; border-color: #1d4ed8; }
+  .month-nav .nav-btn:hover {
+    background: rgba(59,130,246,0.18);
+    border-color: rgba(59,130,246,0.25);
+  }
+}
+
+/* details */
+.details {
+  margin-top: 12px;
+  max-width: 380px;
+  display: grid;
+  gap: 8px;
+}
+.details label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+.details input,
+.details textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.02);
+  font: inherit;
+}
+.details textarea { resize: vertical; min-height: 72px; }
+
+@media (prefers-color-scheme: dark) {
+  .details input,
+  .details textarea {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+    color: inherit;
+  }
 }
