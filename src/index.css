@@ -1,0 +1,4 @@
+:root { color-scheme: light dark; }
+* { box-sizing: border-box; }
+body { margin: 0; line-height: 1.4; font-family: system-ui, sans-serif; }
+button { cursor: pointer; padding: 0.6rem 1rem; font-size: 1rem; }
